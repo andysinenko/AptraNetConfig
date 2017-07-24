@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <xs:schema targetNamespace="http://tempuri.org/XMLSchema.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:mstns="http://tempuri.org/XMLSchema.xsd" xmlns="http://tempuri.org/XMLSchema.xsd"
+	elementFormDefault="qualified">
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="CommunicationsConfig">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TCPIPCommunicationsLink" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SecondaryHosts" minOccurs="0" maxOccurs="1">
+								<xs:complexType mixed="true">
+                                                                 	<xs:sequence>
+								  		<xs:element ref="SecondaryHostIP" minOccurs="1" maxOccurs="unbounded"/>
+								    	</xs:sequence>
+								    	<xs:attribute name="RetryCount" use="optional" default="0">
+									 <xs:simpleType>
+								                 <xs:restriction base="xs:unsignedInt">
+								                 <!-- Units of milliSeconds -->
+								                 <xs:minInclusive value="0"/>
+								                 <xs:maxInclusive value="99"/>
+								                 </xs:restriction>
+								          </xs:simpleType>
+					                               	 </xs:attribute>
+	                                                          	<xs:attribute name="RetryUntilConnect" type="xs:boolean" use="optional" default="false"/>
+	                                                        	<xs:attribute name="TryPrimaryFirst" type="xs:boolean" use="optional" default="false"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="MessageDelimiter" minOccurs="0"/>
+							<xs:element ref="SecureLink" minOccurs="0"/>
+							<xs:element ref="IGTFrame" minOccurs="0"/>
+						</xs:sequence>
+						<xs:attribute name="CommsLinkID" type="xs:string" use="required"/>
+						<xs:attribute name="RemoteHost" type="xs:string" use="required"/>
+						<xs:attribute name="RemotePort" type="xs:unsignedInt" use="required"/>
+						<xs:attribute name="LocalHost" type="xs:string" use="optional"/>
+						<xs:attribute name="LocalPort" type="xs:unsignedInt" use="optional" default="0"/>
+						<xs:attribute name="KeepAlive" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="RetryTimer" use="optional" default="3000">
+						       <xs:simpleType>
+								<xs:restriction base="xs:unsignedInt">
+								<!-- Units of milliSeconds -->
+								<xs:minInclusive value="0"/>
+								<xs:maxInclusive value="360000"/>
+								</xs:restriction>
+								</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="ReconnectOnClose" type="xs:boolean" use="optional" default="true"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TCPIPCommunicationsLinkListener" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RemoteHostIP" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="RemoteHost" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="MessageDelimiter" minOccurs="0"/>
+							<xs:element ref="SecureLink" minOccurs="0"/>
+						</xs:sequence>
+						<xs:attribute name="CommsLinkID" type="xs:string" use="required"/>
+						<xs:attribute name="LocalPort" type="xs:unsignedShort" use="required"/>
+						<xs:attribute name="LocalHost" type="xs:string" use="optional"/>
+						<xs:attribute name="KeepAlive" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="RefuseConnectionRequest" type="xs:boolean" use="optional" default="false"/>
+						<xs:attribute name="RetryTimer" use="optional" default="3000">
+                                                <xs:simpleType>
+								<xs:restriction base="xs:unsignedInt">
+								<!-- Units of milliSeconds -->
+								<xs:minInclusive value="0"/>
+								<xs:maxInclusive value="360000"/>
+								</xs:restriction>
+								</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MessageDelimiter">
+		<xs:complexType mixed="true">
+			<xs:attribute name="MessageDelimiterID" type="xs:string" use="required"/>
+			<xs:attribute name="Assembly" type="xs:string" use="required"/>
+			<xs:attribute name="Class" type="xs:string" use="required"/>
+			<xs:attribute name="LengthSize" type="xs:unsignedByte" use="required"/>
+			<xs:attribute name="LengthFormat" type="xs:unsignedByte" use="required"/>
+			<xs:attribute name="LengthAdjust" type="xs:unsignedInt" use="required"/>
+			<xs:attribute name="LengthEmbedded" type="xs:boolean" use="optional" default="0"/>
+			<xs:attribute name="LengthOffset" type="xs:unsignedInt" use="required"/>
+			<xs:attribute name="RCVTimeOut" use="optional" default="0">
+			<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+					<!-- Units of milliSeconds -->
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="180000"/>
+					</xs:restriction>
+					</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="PrefixSize" type="xs:unsignedByte" use="optional" default="0"/>
+			<xs:attribute name="PrefixData" type="xs:unsignedInt" use="optional" default="0"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IGTFrame">
+		<xs:complexType mixed="true">
+		        <xs:attribute name="Assembly" type="xs:string" use="required" />
+			<xs:attribute name="Class" type="xs:string" use="required" />
+			<xs:attribute name="IGTProVer" use="optional" default="11">
+			<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+					<!-- Units of milliSeconds -->
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="255"/>
+					</xs:restriction>
+					</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="SCSN" type="xs:boolean" use="optional" default="false"/>
+			<xs:attribute name="SocketReset" type="xs:boolean" use="optional" default="false"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SecondaryHostIP">
+                <xs:complexType mixed="true">
+                  <xs:attribute name="SecondaryHost" type="xs:string" use="required"/>
+          	</xs:complexType>
+	</xs:element>
+
+     
+
+	<xs:simpleType name="SecureProtocolType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PCT1"/>
+			<xs:enumeration value="SSL2"/>
+			<xs:enumeration value="SSL3"/>
+			<xs:enumeration value="TLS1"/>
+			<xs:enumeration value="SSL3TLS1"/>
+			<xs:enumeration value="All"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="SecureLink">
+		<xs:complexType>
+			<xs:sequence>
+			       <xs:element name="ReceivedCertSubjects" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="ReceivedCertSubject" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+				 <xs:element name="ReceivedCertIssuers" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="ReceivedCertIssuer" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+				<xs:element name="SuppliedCertID" type="IssuerIdentfier" minOccurs="0"/>
+				<xs:element name="SuppliedCertSubject" type="CertSubjectType" minOccurs="0"/>
+				<xs:element name="CipherSuiteAlgorithm" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence/>
+						<xs:attribute name="AlgorithmID" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="SecureProtocol" type="SecureProtocolType" use="required"/>
+			<xs:attribute name="SessionRenegotiateInterval" use="optional" default="0">
+			<xs:simpleType>
+					<xs:restriction base="xs:short">
+					<!-- Units of milliSeconds -->
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="32767"/>
+					</xs:restriction>
+					</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="KeyRenegotiateInterval" use="optional" default="0">
+			<xs:simpleType>
+					<xs:restriction base="xs:short">
+					<!-- Units of milliSeconds -->
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="32767"/>
+					</xs:restriction>
+					</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="ValidateOnChainPolicy" type="xs:boolean" use="optional" default="true"/>
+			<xs:attribute name="UseCloseNotifyToken" type="xs:boolean" use="optional" default="true"/>
+			<xs:attribute name="CheckCRLForReceivedCert" type="xs:boolean" use="optional" default="false"/>
+			<xs:attribute name="SecureHandshakeTimeout" use="optional" default="60000">
+			<xs:simpleType>
+					<xs:restriction base="xs:int">
+					<!-- Units of milliSeconds -->
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="180000"/>
+					</xs:restriction>
+					</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="IssuerSerialNumber">
+		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="SerialNumber" type="NumberString"/>
+	</xs:attributeGroup>
+	<xs:simpleType name="NumberString">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9A-Fa-f,; ]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="IssuerIdentfier">
+		<xs:attributeGroup ref="IssuerSerialNumber"/>
+	</xs:complexType>
+	<xs:complexType name="CertSubjectType">
+		<xs:sequence/>
+		<xs:attribute name="Name" type="xs:string"/>
+	</xs:complexType>
+</xs:schema>
